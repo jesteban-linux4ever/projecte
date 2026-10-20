@@ -1,0 +1,28 @@
+Original
+
+python
+from machine import Pin
+from utime import sleep_ms
+led = Pin(21, Pin.OUT)
+while True:
+    led.on()
+    sleep_ms(100)
+    led.off()
+    sleep_ms(200)
+
+Modificat (SOS en morse)
+
+python
+from machine import Pin
+from utime import sleep_ms
+led = Pin(21, Pin.OUT)
+def flash(ms):
+    led.on(); sleep_ms(ms)
+    led.off(); sleep_ms(150)
+while True:
+    for _ in range(3): flash(150)   # S
+    sleep_ms(200)
+    for _ in range(3): flash(450)   # O
+    sleep_ms(200)
+    for _ in range(3): flash(150)   # S
+    sleep_ms(1500)
