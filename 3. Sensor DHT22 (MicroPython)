@@ -1,0 +1,39 @@
+Original
+
+python
+from machine import Pin
+from time import sleep
+import dht
+dht = dht.DHT22(Pin(17))
+while True:
+    try:
+        dht.measure()
+        print(dht.temperature())
+        print(dht.humidity())
+        sleep(2)
+    except OSError as e:
+        print('Oops')
+
+Modificat (alarma amb histèresi: LED al GPIO 2 per sobre de 30 °C, s’apaga per sota de 28 °C)
+
+python
+from machine import Pin
+from time import sleep
+import dht
+sensor = dht.DHT22(Pin(17))
+led = Pin(2, Pin.OUT)
+T_ALT, T_BAIX = 30.0, 28.0
+alarma = False
+while True:
+    try:
+        sensor.measure()
+        t, h = sensor.temperature(), sensor.humidity()
+        if t > T_ALT:
+            alarma = True
+        elif t < T_BAIX:
+            alarma = False
+        led.value(alarma)
+        print("T={:.1f}C  H={:.1f}%  Alarma={}".format(t, h, "SI" if alarma else "NO"))
+    except OSError:
+        print("Error de lectura")
+    sleep(2)
